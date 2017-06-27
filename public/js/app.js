@@ -55,3 +55,35 @@ class EditableTimer extends React.Component {
         }
     }
 }
+
+//renders a form for creating a new timer or editing an existing one
+class TimerForm extends React.Component {
+    render () {
+        // uses the presence of this.props.title to determine what text the submit button should display
+        const submitText = this.props.title ? 'Update' : 'Create';
+        return (
+            <div className="ui centered card">
+                <div className="content">
+                    <div className="ui form">
+                        <div className="field">
+                            <label htmlFor="">Title</label>
+                            <input type="text" defaultValue={this.props.title} />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="">Project</label>
+                            <input type="text" defaultValue={this.props.project}/>
+                        </div>
+                        <div className="ui two bottom attached buttons">
+                            <button className="ui basic blue button">
+                                {submitText}
+                            </button>
+                            <button className="ui basic red button">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
