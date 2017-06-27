@@ -4,7 +4,7 @@ class TimerDashboard extends React.Component {
             <div className="ui three column centered grid">
                 <div className="column">
                     <EditableTimerList />
-                    <ToggableTimerForm isOpen={true} />
+                    <ToggableTimerForm isOpen={false} />
                 </div>
             </div>
         )
@@ -101,7 +101,7 @@ class ToggableTimerForm extends React.Component {
             )
         } else {
             return (
-                <div className="ui basic content centered aligned segment">
+                <div className="ui basic content center aligned segment">
                     <button className="ui basic button icon">
                         <i className="plus icon"/>
                     </button>
@@ -141,3 +141,8 @@ class Timer extends React.Component {
         )
     }
 }
+
+ReactDOM.render (
+    <TimerDashboard />,
+    document.getElementById('content')
+);
