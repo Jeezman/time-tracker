@@ -87,3 +87,34 @@ class TimerForm extends React.Component {
         )
     }
 }
+
+
+//ToggableTimerForm
+//wrapper component around TimerForm
+//accepts a single prop (isOpen) from its parent that affects its behaviour
+
+class ToggableTimerForm extends React.Component {
+    render() {
+        if (this.props.isOpen) {
+            return (
+                <TimerForm />
+            )
+        } else {
+            return (
+                <div className="ui basic content centered aligned segment">
+                    <button className="ui basic button icon">
+                        <i className="plus icon"/>
+                    </button>
+                </div>
+            )
+        }
+    }
+}
+
+
+
+
+ReactDOM.render(
+    <TimerDashboard />,
+    document.getElementById('content')
+);
