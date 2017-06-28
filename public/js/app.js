@@ -120,15 +120,30 @@ class TimerForm extends React.Component {
 //accepts a single prop (isOpen) from its parent that affects its behaviour
 
 class ToggableTimerForm extends React.Component {
+    state = {
+        isOpen: false,
+    };
+
+    //toggles state of form to open
+
+    handleFormOpen = () => {
+        this.setState({
+            isOpen: true,
+        });
+    }
+
     render() {
-        if (this.props.isOpen) {
+        if (this.state.isOpen) {
             return (
                 <TimerForm />
             )
         } else {
             return (
                 <div className="ui basic content center aligned segment">
-                    <button className="ui basic button icon">
+                    <button 
+                        className="ui basic button icon"
+                        onClick={this.handleFormOpen}
+                    >
                         <i className="plus icon"/>
                     </button>
                 </div>
