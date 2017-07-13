@@ -19,6 +19,18 @@ class TimerDashboard extends React.Component {
         ],
     }
 
+    // inserts a new timer into our timer list state
+    handleCreateFormSubmit = (timer) => {
+        this.createTimer(timer);
+    }
+
+    createTimer = (timer) => {
+        const t = helpers.newTimer(timer);
+        this.setState({
+            timers: this.state.timers.concat(t)
+        })
+    }
+
     render () {
         return (
             <div className="ui three column centered grid">
@@ -26,7 +38,9 @@ class TimerDashboard extends React.Component {
                     <EditableTimerList 
                         timers={this.state.timers}
                     />
-                    <ToggableTimerForm isOpen={false} />
+                    <ToggableTimerForm 
+                        onFormSubmit={this.handleCreateFormSubmit}
+                    />
                 </div>
             </div>
         )
