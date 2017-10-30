@@ -5,3 +5,7 @@
 #content {
   margin-top: 3em;
 }
+
+.hover-icon {
+  cursor: pointer;
+}

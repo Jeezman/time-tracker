@@ -12,7 +12,7 @@ class TimerDashboard extends React.Component {
         title: "Bake squash",
         project: "Kitchen Chores",
         id: uuid.v4(),
-        elapsed: 1273998,
+        elapsed: 0,
         runningSince: null
       }
     ]
@@ -49,6 +49,14 @@ class TimerDashboard extends React.Component {
     });
   };
 
+  handleTrashClick = timerId => this.deleteTimer(timerId);
+
+  deleteTimer = timerId => {
+    this.setState({
+      timers: this.state.timers.filter(t => t.id !== timerId)
+    });
+  };
+
   render() {
     return (
       <div className="ui three column centered grid">
@@ -57,6 +65,7 @@ class TimerDashboard extends React.Component {
           <EditableTimerList
             timers={this.state.timers}
             onFormSubmit={this.handleEditFormSubmit}
+            onTrashClick={this.handleTrashClick}
           />
           <ToggableTimerForm onFormSubmit={this.handleCreateFormSubmit} />
         </div>
@@ -67,7 +76,7 @@ class TimerDashboard extends React.Component {
 
 class EditableTimerList extends React.Component {
   render() {
-    const timers = this.props.timers.map(timer =>
+    const timers = this.props.timers.map(timer => (
       <EditableTimer
         key={timer.id}
         id={timer.id}
@@ -76,13 +85,10 @@ class EditableTimerList extends React.Component {
         elapsed={timer.elapsed}
         runningSince={timer.runningSince}
         onFormSubmit={this.props.onFormSubmit}
+        onTrashClick={this.props.onTrashClick}
       />
-    );
-    return (
-      <div id="timers">
-        {timers}
-      </div>
-    );
+    ));
+    return <div id="timers">{timers}</div>;
   }
 }
 
@@ -132,6 +138,7 @@ class EditableTimer extends React.Component {
           elapsed={this.props.elapsed}
           runningSince={this.props.runningSince}
           onEditClick={this.handleEditClick}
+          onTrashClick={this.props.onTrashClick}
         />
       );
     }
@@ -204,11 +211,6 @@ class TimerForm extends React.Component {
     );
   }
 }
-
-//ToggableTimerForm
-//wrapper component around TimerForm
-//accepts a single prop (isOpen) from its parent that affects its behaviour
-
 class ToggableTimerForm extends React.Component {
   state = {
     isOpen: false
@@ -257,30 +259,41 @@ class ToggableTimerForm extends React.Component {
 }
 
 class Timer extends React.Component {
+  handleTrashClick = () => {
+    this.props.onTrashClick(this.props.id);
+  };
+
+  componentDidMount() {
+    this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.forceUpdateInterval);
+  }
   render() {
-    const elapsedString = helpers.renderElapsedString(this.props.elapsed);
+    const elapsedString = helpers.renderElapsedString(
+      this.props.elapsed,
+      this.props.runningSince
+    );
     return (
       <div className="ui centered card">
         <div className="content">
-          <div className="header">
-            {this.props.title}
-          </div>
-          <div className="meta">
-            {this.props.project}
-          </div>
+          <div className="header">{this.props.title}</div>
+          <div className="meta">{this.props.project}</div>
           <div className="center aligned description">
-            <h2>
-              {elapsedString}
-            </h2>
+            <h2>{elapsedString}</h2>
           </div>
           <div className="extra content">
             <span
-              className="right floated edit icon"
+              className="right floated edit icon hover-icon"
               onClick={this.props.onEditClick}
             >
               <i className="edit icon" />
             </span>
-            <span className="right floated trash icon">
+            <span
+              className="right floated trash icon hover-icon"
+              onClick={this.handleTrashClick}
+            >
               <i className="trash icon" />
             </span>
           </div>
