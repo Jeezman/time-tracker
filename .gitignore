@@ -3,3 +3,5 @@ tests_output/
 npm-debug.log.*
 node_modules
 tests/
+.DS_Store
+nightwatch.json
